@@ -1,0 +1,4 @@
+NB10\SQLEXPRESS
+controledeestoque
+sa
+123

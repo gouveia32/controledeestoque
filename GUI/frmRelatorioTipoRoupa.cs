@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 
 namespace GUI
@@ -27,15 +27,15 @@ namespace GUI
         private DataTable populate(DataTable dt)
         {
             string cnstr = @DALDadosDoBanco.stringDeConexao;
-            SqlConnection cn = new SqlConnection(cnstr);
-            SqlDataAdapter da = new SqlDataAdapter();
+            MySqlConnection cn = new MySqlConnection(cnstr);
+            MySqlDataAdapter da = new MySqlDataAdapter();
             if (pes == 1)
             {
-                da = new SqlDataAdapter("SELECT umed_cod, umed_nome FROM dbo.undmedida ", cn);
+                da = new MySqlDataAdapter("SELECT umed_cod, umed_nome FROM dbo.undmedida ", cn);
             }
             else
             {
-                da = new SqlDataAdapter("SELECT umed_cod, umed_nome FROM dbo.undmedida where umed_nome like '%" + nome + "%'", cn);
+                da = new MySqlDataAdapter("SELECT umed_cod, umed_nome FROM dbo.undmedida where umed_nome like '%" + nome + "%'", cn);
 
             }
             //SELECT umed_cod, umed_nome FROM dbo.undmedida where umed_nome like '%'+@nome+'%'

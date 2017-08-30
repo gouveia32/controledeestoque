@@ -9,7 +9,7 @@ namespace ControleDeEstoque.DAL
     public class DALDadosDoBanco
     {
         //-------------------------------------------------------------------------------------------------------------------
-        public static String servidor = @".\SQLEXPRESS";
+        public static String servidor = @".\MySqlEXPRESS";
         public static String banco = "controledeestoque";
         public static String usuario = "sa";
         public static String senha = "lucas";
@@ -20,7 +20,7 @@ namespace ControleDeEstoque.DAL
             {
                 return @"Data Source=" + servidor + ";Initial Catalog=" + banco + ";User ID=" + usuario + ";Password=" + senha;
                 
-                //return "server=GUEVARA-PC\\SQLEXPRESS;database=controledeestoque;user=sa;pwd=lucas";                
+                //return "server=GUEVARA-PC\\MySqlEXPRESS;database=controledeestoque;user=sa;pwd=lucas";                
             }
         }
         //-------------------------------------------------------------------------------------------------------------------

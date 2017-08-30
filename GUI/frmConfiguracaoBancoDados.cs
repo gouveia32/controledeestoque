@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using ControleDeEstoque.DAL;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace ControleDeEstoque.GUI
 {
@@ -61,13 +61,13 @@ namespace ControleDeEstoque.GUI
                 DALDadosDoBanco.senha = txtSenha.Text;
                 arquivo.Close();
                 //testar a conexao
-                SqlConnection conexao = new SqlConnection();
+                MySqlConnection conexao = new MySqlConnection();
                 conexao.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 conexao.Open();
                 conexao.Close();
                 MessageBox.Show("Conexão efetuada com sucesso!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (SqlException errob)
+            catch (MySqlException errob)
             {
                 MessageBox.Show("Erro ao se conectar no banco de dados \n" + "Verifique os dados informados!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

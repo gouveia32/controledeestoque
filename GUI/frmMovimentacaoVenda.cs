@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using ControleDeEstoque.BLL;
 using ControleDeEstoque.Modelo;
 using ControleDeEstoque.DAL;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Drawing.Drawing2D;
 
 
@@ -709,11 +709,11 @@ namespace ControleDeEstoque.GUI
         private void btSalvarParcela_Click(object sender, EventArgs e)
         {
             //criei a conexao
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
             cn.Open();
             //triar a transacao
-            SqlTransaction tran = cn.BeginTransaction();
+            MySqlTransaction tran = cn.BeginTransaction();
             try
             {
                 if (this.operacao == "inserir")

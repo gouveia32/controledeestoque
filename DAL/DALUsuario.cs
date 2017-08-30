@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace ControleDeEstoque.DAL
             try
             {              
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into usuarios(usu_nome, usu_senha, usu_email, usu_tipo, usu_ativo) values (@nome, @senha, @email, @tipo, @ativo); select @@IDENTITY;";
 
@@ -40,9 +40,9 @@ namespace ControleDeEstoque.DAL
                 obj.usu_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE usuarios SET usu_nome = @nome, usu_senha = @senha, usu_email = @email, usu_tipo = @tipo, usu_ativo = @ativo WHERE usu_cod = @cod";
 
@@ -75,9 +75,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete from usuarios WHERE usu_cod = @cod";
 
@@ -104,9 +104,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -121,7 +121,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from usuarios", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from usuarios", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -129,7 +129,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from usuarios where usu_nome like '%" +
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from usuarios where usu_nome like '%" +
                 valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
@@ -138,12 +138,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaUsuario(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from usuarios where usu_nome = @nome";
             cmd.Parameters.AddWithValue("@nome", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -155,12 +155,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaUsuarioEmail(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from usuarios where usu_email = @email";
             cmd.Parameters.AddWithValue("@email", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -172,11 +172,11 @@ namespace ControleDeEstoque.DAL
         public ModeloUsuario carregaModelo(int codigo)
         {
             ModeloUsuario modelo = new ModeloUsuario();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from usuarios where usu_cod =" + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -193,11 +193,11 @@ namespace ControleDeEstoque.DAL
         public ModeloLogin carregaModeloLogin(int codigo)
         {
             ModeloLogin modelo = new ModeloLogin();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from usuarios where usu_cod =" + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

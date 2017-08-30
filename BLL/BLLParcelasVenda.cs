@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ControleDeEstoque.Modelo;
 using ControleDeEstoque.DAL;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Data;
 
 namespace ControleDeEstoque.BLL
@@ -36,7 +36,7 @@ namespace ControleDeEstoque.BLL
 
         }
         //-------------------------------------------------------------------------------------------------------------------
-        public void Incluir(ModeloParcelasVenda obj, SqlConnection cn, SqlTransaction tran)
+        public void Incluir(ModeloParcelasVenda obj, MySqlConnection cn, MySqlTransaction tran)
         {
 
             if (obj.ven_cod <= 0)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ControleDeEstoque.Modelo;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Data;
 
 namespace ControleDeEstoque.DAL
@@ -15,12 +15,12 @@ namespace ControleDeEstoque.DAL
         public void Incluir(ModeloCompra obj)
         {
             //conexao
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "insert into compra(com_data, com_pagto_data, com_nfiscal, com_pagto_total, com_pagto_dinheiro, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod) " +
                  "values (@com_data, @com_pagto_data, @com_nfiscal, @com_pagto_total, @com_pagto_dinheiro, @com_pagto_cartao, @com_nparcela, @com_status, @for_cod, @tpa_cod); select @@IDENTITY;";
@@ -39,9 +39,9 @@ namespace ControleDeEstoque.DAL
                 obj.com_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -53,13 +53,13 @@ namespace ControleDeEstoque.DAL
             }
         }
         //-------------------------------------------------------------------------------------------------------------------
-        public void Incluir(ModeloCompra obj, SqlConnection cn, SqlTransaction tran)
+        public void Incluir(ModeloCompra obj, MySqlConnection cn, MySqlTransaction tran)
         {
             try
             {
                 //cn.ConnectionString = DadosDoBanco.stringDeConexao;
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.Transaction = tran;
                 cmd.CommandText = "insert into compra(com_data, com_pagto_data, com_nfiscal, com_pagto_total, com_pagto_dinheiro, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod) " +
@@ -79,9 +79,9 @@ namespace ControleDeEstoque.DAL
                 obj.com_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -96,11 +96,11 @@ namespace ControleDeEstoque.DAL
         public void Alterar(ModeloCompra obj)
         {
             //conexão
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "UPDATE compra set com_data = @com_data, com_data_pagto = @com_pagto_data, com_nfiscal = @com_nfiscal, com_pagto_total = @com_pagto_total, com_pagto_dinheiro = @com_pagto_dinheiro, com_pagto_cartao = @com_pagto_cartao, com_nparcela = @com_nparcela, com_status = @com_status, cli_cod = @cli_cod, tpa_cod = @tpa_cod   WHERE com_cod = @com_cod";
 
@@ -118,9 +118,9 @@ namespace ControleDeEstoque.DAL
                 cn.Open();
                 obj.com_cod = Convert.ToInt32(cmd.ExecuteScalar());
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -135,12 +135,12 @@ namespace ControleDeEstoque.DAL
         //cancela a venda ven_status = 2 cancelado
         public void Cancelar(int com_cod)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "UPDATE compra set com_status = 2   WHERE com_cod = @com_cod";
                 cmd.Parameters.AddWithValue("@com_cod", com_cod);
@@ -151,9 +151,9 @@ namespace ControleDeEstoque.DAL
                 //cmd.Parameters.AddWithValue("@com_cod", com_cod);
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Number);
+                throw new Exception("MySql ERROR: " + ex.Number);
             }
             catch (Exception ex)
             {
@@ -167,12 +167,12 @@ namespace ControleDeEstoque.DAL
         //-------------------------------------------------------------------------------------------------------------------
         public void Excluir(int codigo)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "delete From compra WHERE com_cod = @com_cod";
 
@@ -181,9 +181,9 @@ namespace ControleDeEstoque.DAL
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -198,7 +198,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select com_cod as codigo, com_data as data, com_nfiscal as nfiscal , com_pagto_total as total, com_nparcela as nparcela, com_status as status from compra", DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select com_cod as codigo, com_data as data, com_nfiscal as nfiscal , com_pagto_total as total, com_nparcela as nparcela, com_status as status from compra", DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -216,26 +216,26 @@ namespace ControleDeEstoque.DAL
             {
                 StipoNota = " com_status = 2";
             }
-            string sql = "";
+            string MySql = "";
             if (tipoConsulta == 0) //geral
             {
-                sql = "Select * from compra";
+                MySql = "Select * from compra";
                 if (StipoNota.Length > 0)
                 {
-                    sql = sql + " Where " + StipoNota;
+                    MySql = MySql + " Where " + StipoNota;
                 }
 
             }
             else //por cliente
             {
-                sql = "Select * from compra where cli_cod =" + tipoConsulta.ToString();
+                MySql = "Select * from compra where cli_cod =" + tipoConsulta.ToString();
                 if (StipoNota.Length > 0)
                 {
-                    sql = sql + " and " + StipoNota;
+                    MySql = MySql + " and " + StipoNota;
                 }
             }
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(sql, DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter(MySql, DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -252,17 +252,17 @@ namespace ControleDeEstoque.DAL
                 StipoNota = " and com_status = 2";
             }
 
-            string sql = "";
+            string MySql = "";
             if (tipoConsulta == 1) //geral
             {
-                sql = "and cli_cod =" + tipoConsulta.ToString();
+                MySql = "and cli_cod =" + tipoConsulta.ToString();
 
             }
-            String sqlData = " Select * from compra where com_data between @ini and @fim ";
-            sqlData = sqlData + StipoNota + sql;
+            String MySqlData = " Select * from compra where com_data between @ini and @fim ";
+            MySqlData = MySqlData + StipoNota + MySql;
 
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(sqlData, DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter(MySqlData, DALDadosDoBanco.stringDeConexao);
             da.SelectCommand.Parameters.AddWithValue("@ini", inicio);
             da.SelectCommand.Parameters.AddWithValue("@fim", fim);
             da.Fill(tabela);
@@ -273,7 +273,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(int CodigoCliente)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from compra where cli_cod =" +
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from compra where cli_cod =" +
                 CodigoCliente.ToString(), DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
@@ -282,13 +282,13 @@ namespace ControleDeEstoque.DAL
         public ModeloCompra carregaModelo(int codigo)
         {
             ModeloCompra modelo = new ModeloCompra();
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn;
             cmd.CommandText = "select * from compra where com_cod =" + codigo.ToString();
             cn.Open();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

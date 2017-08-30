@@ -1,4 +1,4 @@
-NB10\SQLEXPRESS
+localhost
 controledeestoque
-sa
-123
+root
+ebtaju

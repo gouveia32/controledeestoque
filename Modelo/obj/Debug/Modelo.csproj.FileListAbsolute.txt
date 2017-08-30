@@ -100,3 +100,7 @@ C:\Users\gouve\Source\Repos\ControleEstoque\Modelo\bin\Debug\Modelo.dll
 C:\Users\gouve\Source\Repos\ControleEstoque\Modelo\bin\Debug\Modelo.pdb
 C:\Users\gouve\Source\Repos\ControleEstoque\Modelo\obj\Debug\Modelo.dll
 C:\Users\gouve\Source\Repos\ControleEstoque\Modelo\obj\Debug\Modelo.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\Modelo\bin\Debug\Modelo.dll
+C:\Users\gouve\Source\Repos\controledeestoque\Modelo\bin\Debug\Modelo.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\Modelo\obj\Debug\Modelo.dll
+C:\Users\gouve\Source\Repos\controledeestoque\Modelo\obj\Debug\Modelo.pdb

@@ -11,7 +11,7 @@ using GUI;
 using System.Drawing.Drawing2D;
 using ControleDeEstoque.Modelo;
 using ControleDeEstoque.BLL;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 using System.IO;
 
@@ -535,12 +535,12 @@ namespace ControleDeEstoque.GUI
                 DALDadosDoBanco.senha = arquivo.ReadLine();
                 arquivo.Close();
                 //testar a conexao
-                SqlConnection conexao = new SqlConnection();
+                MySqlConnection conexao = new MySqlConnection();
                 conexao.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 conexao.Open();
                 conexao.Close();
             }
-            catch (SqlException errob)
+            catch (MySqlException errob)
             {
                 MessageBox.Show("Erro ao se conectar no banco de dados \n" + "Acesse as configurações de banco do dados e informe os parâmetros de conexão", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -564,9 +564,9 @@ namespace ControleDeEstoque.GUI
                     String nomeBanco = DALDadosDoBanco.banco;
                     String localBackup = d.FileName;
                     String conexao = @"Data Source=" + DALDadosDoBanco.servidor + ";Initial Catalog = master;User=" + DALDadosDoBanco.usuario + ";Password=" + DALDadosDoBanco.senha;
-                    SQLServerBackup.BackupDataBase(conexao, nomeBanco, d.FileName);
+                    MySqlServerBackup.BackupDataBase(conexao, nomeBanco, d.FileName);
                     //string nome = d.FileName;
-                    //SQLServerBackup.BackupDataBase(conexao, "controledeestoque", nome);
+                    //MySqlServerBackup.BackupDataBase(conexao, "controledeestoque", nome);
                     MessageBox.Show("Backup gerado com sucesso", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -590,9 +590,9 @@ namespace ControleDeEstoque.GUI
                     String nomeBanco = DALDadosDoBanco.banco;
                     String localBackup = d.FileName;
                     String conexao = @"Data Source=" + DALDadosDoBanco.servidor + ";Initial Catalog = master;User=" + DALDadosDoBanco.usuario + ";Password=" + DALDadosDoBanco.senha;
-                    SQLServerBackup.RestaurarDataBase(conexao, nomeBanco, d.FileName);
+                    MySqlServerBackup.RestaurarDataBase(conexao, nomeBanco, d.FileName);
                     //String nome = d.FileName;
-                    //SQLServerBackup.RestaurarDataBase(conexao, nomeBD, nome);
+                    //MySqlServerBackup.RestaurarDataBase(conexao, nomeBD, nome);
                     MessageBox.Show("Backup restaurado com sucesso", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }

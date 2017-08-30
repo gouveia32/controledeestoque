@@ -204,3 +204,16 @@ C:\Users\gouve\Source\Repos\ControleEstoque\BLL\bin\Debug\Modelo.dll
 C:\Users\gouve\Source\Repos\ControleEstoque\BLL\bin\Debug\DAL.pdb
 C:\Users\gouve\Source\Repos\ControleEstoque\BLL\bin\Debug\Ferramentas.pdb
 C:\Users\gouve\Source\Repos\ControleEstoque\BLL\bin\Debug\Modelo.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\obj\Debug\BLL.dll
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\obj\Debug\BLL.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\BLL.dll
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\BLL.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\DAL.dll
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\Ferramentas.exe
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\Modelo.dll
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\MySql.Data.dll
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\DAL.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\Ferramentas.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\Modelo.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\BLL\bin\Debug\MySql.Data.xml

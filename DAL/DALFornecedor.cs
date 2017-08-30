@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into fornecedor(for_nome, for_rsocial, for_ie, for_cnpj, for_cep, for_endereco, for_bairro, for_fone, for_cel, for_email, for_endnumero, for_cidade, for_estado) values (@nome, @rsocial, @ie, @cnpj, @cep, @endereco, @bairro, @fone, @cel, @email, @endnumero, @cidade, @estado); select @@IDENTITY;";
 
@@ -46,9 +46,9 @@ namespace ControleDeEstoque.DAL
                 obj.for_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE fornecedor SET for_nome = @nome, for_rsocial = @rsocial, for_ie = @ie, for_cnpj = @cnpj, for_cep = @cep, for_endereco = @endereco, for_bairro = @bairro, for_fone = @fone, for_cel = @cel, for_email =  @email, for_endnumero =  @endnumero, for_cidade = @cidade, for_estado = @estado WHERE for_cod = @forcod";
                 cmd.Parameters.AddWithValue("@forcod", obj.for_cod);
@@ -85,9 +85,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 obj.for_cod = Convert.ToInt32(cmd.ExecuteScalar());
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -104,7 +104,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete from fornecedor WHERE for_cod = @forcod";
 
@@ -113,9 +113,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select for_cod as codigo, for_nome as nome, for_rsocial as rsocial, for_ie as ie, for_cnpj as cnpj, for_cep as cep, for_endereco as endereco, for_bairro as bairro, for_fone as fone, for_cel as cel, for_email as email, for_endnumero as numero, for_cidade as cidade, for_estado as estado from fornecedor", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select for_cod as codigo, for_nome as nome, for_rsocial as rsocial, for_ie as ie, for_cnpj as cnpj, for_cep as cep, for_endereco as endereco, for_bairro as bairro, for_fone as fone, for_cel as cel, for_email as email, for_endnumero as numero, for_cidade as cidade, for_estado as estado from fornecedor", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -138,7 +138,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(string valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from fornecedor where for_nome like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from fornecedor where for_nome like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -146,12 +146,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaFornecedor(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from fornecedor where for_cnpj = @cnpj";
             cmd.Parameters.AddWithValue("@cnpj", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -163,12 +163,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaFornecedorEmail(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from fornecedor where for_email = @email";
             cmd.Parameters.AddWithValue("@email", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -180,11 +180,11 @@ namespace ControleDeEstoque.DAL
         public ModeloFornecedor carregaModelo(int codigo)
         {
             ModeloFornecedor modelo = new ModeloFornecedor();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from fornecedor where for_cod =" + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

@@ -52,3 +52,10 @@ C:\Users\gouve\Source\Repos\ControleEstoque\Ferramentas\obj\Debug\Ferramentas.Pr
 C:\Users\gouve\Source\Repos\ControleEstoque\Ferramentas\obj\Debug\Ferramentas.csproj.GenerateResource.Cache
 C:\Users\gouve\Source\Repos\ControleEstoque\Ferramentas\obj\Debug\Ferramentas.exe
 C:\Users\gouve\Source\Repos\ControleEstoque\Ferramentas\obj\Debug\Ferramentas.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\bin\Debug\Ferramentas.exe.config
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\bin\Debug\Ferramentas.exe
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\bin\Debug\Ferramentas.pdb
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\obj\Debug\Ferramentas.Properties.Resources.resources
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\obj\Debug\Ferramentas.csproj.GenerateResource.Cache
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\obj\Debug\Ferramentas.exe
+C:\Users\gouve\Source\Repos\controledeestoque\Ferramentas\obj\Debug\Ferramentas.pdb

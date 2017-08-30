@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace ControleDeEstoque.DAL
             try
             {              
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into subcategoria(scat_nome, cat_cod) values (@scatnome, @catcod); select @@IDENTITY;";
 
@@ -36,9 +36,9 @@ namespace ControleDeEstoque.DAL
                 obj.cat_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE subcategoria SET scat_nome = @nome, cat_cod = @catcod WHERE scat_cod = @cod";
 
@@ -67,9 +67,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete from subcategoria WHERE scat_cod = @cod";
 
@@ -96,9 +96,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from subcategoria", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from subcategoria", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -121,7 +121,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from subcategoria where scat_nome like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from subcategoria where scat_nome like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -129,7 +129,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComCodigo(int valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from subcategoria where cat_cod like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from subcategoria where cat_cod like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -137,12 +137,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaSubCategoria(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from subcategoria where scat_nome = @nome";
             cmd.Parameters.AddWithValue("@nome", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -154,11 +154,11 @@ namespace ControleDeEstoque.DAL
         public ModeloSubCategoria carregaModelo(int codigo)
         {
             ModeloSubCategoria modelo = new ModeloSubCategoria();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from subcategoria where scat_cod =" + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

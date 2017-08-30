@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ControleDeEstoque.DAL;
 using ControleDeEstoque.Modelo;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Data;
 
 
@@ -42,7 +42,7 @@ namespace ControleDeEstoque.BLL
             DALobj.incluir(obj);
         }
         //-------------------------------------------------------------------------------------------------------------------
-        public void Incluir(ModeloVenda obj, SqlConnection cn, SqlTransaction tran)
+        public void Incluir(ModeloVenda obj, MySqlConnection cn, MySqlTransaction tran)
         {
             //O nome da categoria é obrigatorio
             if (obj.ven_nfiscal <= 0)

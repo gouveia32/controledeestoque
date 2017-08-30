@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using ControleDeEstoque.DAL;
 using ControleDeEstoque.BLL;
 using ControleDeEstoque.Modelo;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 
 namespace ControleDeEstoque.GUI

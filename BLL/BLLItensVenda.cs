@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Data;
 using ControleDeEstoque.Modelo;
 using ControleDeEstoque.DAL;
@@ -29,7 +29,7 @@ namespace ControleDeEstoque.BLL
             DALobj.Incluir(obj);
         }
         //-------------------------------------------------------------------------------------------------------------------
-        public void Incluir(ModeloItensVenda obj, SqlConnection cn, SqlTransaction tran)
+        public void Incluir(ModeloItensVenda obj, MySqlConnection cn, MySqlTransaction tran)
         {
             DALItensVenda item = new DALItensVenda(new DALConexao(DALDadosDoBanco.stringDeConexao));
             item.Incluir(obj, cn, tran);

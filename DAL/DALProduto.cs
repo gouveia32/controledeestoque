@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Data;
 using ControleDeEstoque.Modelo;
 
@@ -21,17 +21,17 @@ namespace ControleDeEstoque.DAL
         //-------------------------------------------------------------------------------------------------------------------
         public void incluir(ModeloProduto obj)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "insert into Produto (pro_nome, pro_descricao, pro_foto, pro_valorpago, pro_valorvenda, pro_qtde, umed_cod, cat_cod, scat_cod, pro_tamanho, pro_codigobarras) values(@pro_nome, @pro_descricao, @pro_foto, @pro_valorpago, @pro_valorvenda, @pro_qtde, @umed_cod, @cat_cod, @scat_cod, @pro_tamanho, @pro_codigobarras);select @@IDENTITY";
 
                 cmd.Parameters.AddWithValue("@pro_nome", obj.pro_nome);
                 cmd.Parameters.AddWithValue("@pro_descricao", obj.pro_descricao);
-                cmd.Parameters.Add("@pro_foto", System.Data.SqlDbType.Image);             
+                cmd.Parameters.Add("@pro_foto", MySqlDbType.Blob);             
                 if (obj.pro_foto == null)
                 {
                     //cmd.Parameters.AddWithValue("@pro_foto", DBNull.Value);
@@ -53,9 +53,9 @@ namespace ControleDeEstoque.DAL
                 cn.Open();
                 obj.pro_cod = Convert.ToInt32(cmd.ExecuteScalar());
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -70,18 +70,18 @@ namespace ControleDeEstoque.DAL
         public void alterar(ModeloProduto obj)
         {
             //conexão
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "UPDATE Produto set pro_nome = @pro_nome, pro_descricao = @pro_descricao, pro_foto = @pro_foto, pro_valorpago = @pro_valorpago, pro_valorvenda = @pro_valorvenda, pro_qtde = @pro_qtde, umed_cod = @umed_cod, cat_cod = @cat_cod, scat_cod = @scat_cod, pro_tamanho = @pro_tamanho, pro_codigobarras = @pro_codigobarras WHERE pro_cod = @pro_cod";
                 cmd.Parameters.AddWithValue("@pro_nome", obj.pro_nome);
                 cmd.Parameters.AddWithValue("@pro_descricao", obj.pro_descricao);
 
-                cmd.Parameters.Add("@pro_foto", System.Data.SqlDbType.Image);
+                cmd.Parameters.Add("@pro_foto", MySqlDbType.Blob);
                 if (obj.pro_foto == null)
                 {
                     //cmd.Parameters.AddWithValue("@pro_foto", DBNull.Value);
@@ -106,9 +106,9 @@ namespace ControleDeEstoque.DAL
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -123,21 +123,21 @@ namespace ControleDeEstoque.DAL
         //-------------------------------------------------------------------------------------------------------------------
         public void excluir(int codigo)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "delete from Produto  WHERE pro_cod = @pro_cod";
                 cmd.Parameters.AddWithValue("@pro_cod", codigo);
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Number);
+                throw new Exception("MySql ERROR: " + ex.Number);
             }
             catch (Exception ex)
             {
@@ -153,7 +153,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from produto", DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from produto", DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -161,7 +161,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from produto where pro_nome like '%" + valor + "%'", DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from produto where pro_nome like '%" + valor + "%'", DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -174,7 +174,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemCodigoBarras(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from produto where pro_codigobarras like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from produto where pro_codigobarras like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -182,7 +182,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComCodigo(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from produto where pro_cod like '%" + valor + "%'", DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from produto where pro_cod like '%" + valor + "%'", DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -190,7 +190,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComCodigoBarras(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from produto where pro_codigobarras like '%" + valor + "%'", DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from produto where pro_codigobarras like '%" + valor + "%'", DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -198,12 +198,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaCodigoBarras(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from produto where pro_codigoBarras = @codigobarras";
             cmd.Parameters.AddWithValue("@codigobarras", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -215,13 +215,13 @@ namespace ControleDeEstoque.DAL
         public ModeloProduto carregaModelo(int codigo)
         {
             ModeloProduto modelo = new ModeloProduto();
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn;
             cmd.CommandText = "select * from produto where pro_cod =" + codigo.ToString();
             cn.Open();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

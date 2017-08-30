@@ -129,9 +129,9 @@ namespace ControleDeEstoque.GUI
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sql"></param>
+        /// <param name="MySql"></param>
         /// <returns></returns>
-        public static DataTable preencheLancamentos(string sql)
+        public static DataTable preencheLancamentos(string MySql)
         {
             using (OleDbConnection con = Acesso.GetConnection())
             {
@@ -139,7 +139,7 @@ namespace ControleDeEstoque.GUI
                 {
                     con.Open();
 
-                    OleDbCommand cmd = new OleDbCommand(sql, con);
+                    OleDbCommand cmd = new OleDbCommand(MySql, con);
                     OleDbDataAdapter da = new OleDbDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -159,18 +159,18 @@ namespace ControleDeEstoque.GUI
         /// 
         /// </summary>
         /// <param name="Combo"></param>
-        /// <param name="strSql"></param>
+        /// <param name="strMySql"></param>
         /// <param name="Display"></param>
         /// <param name="Value"></param>
-        public static void preencheComboBox(ComboBox Combo, string strSql, string Display, string Value)
+        public static void preencheComboBox(ComboBox Combo, string strMySql, string Display, string Value)
         {
             using (OleDbConnection con = Acesso.GetConnection())
             {
                 try
                 {
                     con.Open();
-                    string sql = strSql;
-                    OleDbCommand cmd = new OleDbCommand(sql, con);
+                    string MySql = strMySql;
+                    OleDbCommand cmd = new OleDbCommand(MySql, con);
                     OleDbDataAdapter da = new OleDbDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -204,8 +204,8 @@ namespace ControleDeEstoque.GUI
                 try
                 {
                     con.Open();
-                    string sql = "Select desc_conta from tblcontas where cod_conta=" + codigo;
-                    OleDbCommand cmd = new OleDbCommand(sql, con);
+                    string MySql = "Select desc_conta from tblcontas where cod_conta=" + codigo;
+                    OleDbCommand cmd = new OleDbCommand(MySql, con);
                     dr = cmd.ExecuteReader();
                     if (dr.HasRows)
                     {
@@ -234,16 +234,16 @@ namespace ControleDeEstoque.GUI
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sql"></param>
+        /// <param name="MySql"></param>
         /// <param name="con"></param>
         /// <returns></returns>
-        public static OleDbDataReader getDataReader(string sql, OleDbConnection con)
+        public static OleDbDataReader getDataReader(string MySql, OleDbConnection con)
         {
             OleDbDataReader dr = null;
             try
             {
                 con.Open();
-                OleDbCommand cmd = new OleDbCommand(sql, con);
+                OleDbCommand cmd = new OleDbCommand(MySql, con);
                 dr = cmd.ExecuteReader();
                 return dr;
             }
@@ -262,10 +262,10 @@ namespace ControleDeEstoque.GUI
         public static Boolean alteraSenha(string login, string senha, OleDbConnection con)
         {
             bool flag = false;
-            string sql = "Update Usuarios set senha = ? Where login = ?";
+            string MySql = "Update Usuarios set senha = ? Where login = ?";
             try
             {
-                OleDbCommand cmd = new OleDbCommand(sql, con);
+                OleDbCommand cmd = new OleDbCommand(MySql, con);
 
                 cmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("login", login));
                 cmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("senha", Acesso.GerarHash(senha)));
@@ -298,10 +298,10 @@ namespace ControleDeEstoque.GUI
         public static Boolean cadastraUsuario(string login, string senha, bool ativo, int perfil, string email, OleDbConnection con)
         {
             bool flag = false;
-            string sql = "Insert Into Usuarios(login,senha,ativo,perfil,email) values(?,?,?,?,?)";
+            string MySql = "Insert Into Usuarios(login,senha,ativo,perfil,email) values(?,?,?,?,?)";
             try
             {
-                OleDbCommand cmd = new OleDbCommand(sql, con);
+                OleDbCommand cmd = new OleDbCommand(MySql, con);
 
                 cmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("login", login));
                 cmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("senha", Acesso.GerarHash(senha)));
@@ -330,14 +330,14 @@ namespace ControleDeEstoque.GUI
         /// 
         /// </summary>
         /// <param name="con"></param>
-        /// <param name="sql"></param>
+        /// <param name="MySql"></param>
         /// <returns></returns>
-        public static Double getDataGrafico(OleDbConnection con, string sql)
+        public static Double getDataGrafico(OleDbConnection con, string MySql)
         {
             Double valor = 0;
             try
             {
-                OleDbCommand cmd = new OleDbCommand(sql, con);
+                OleDbCommand cmd = new OleDbCommand(MySql, con);
 
                 if (cmd.ExecuteScalar() == System.DBNull.Value)
                 {

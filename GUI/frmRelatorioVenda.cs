@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 
 namespace GUI
@@ -27,15 +27,15 @@ namespace GUI
         private DataTable populate(DataTable dt)
         {
             string cnstr = @DALDadosDoBanco.stringDeConexao;
-            SqlConnection cn = new SqlConnection(cnstr);
-            SqlDataAdapter da = new SqlDataAdapter();
+            MySqlConnection cn = new MySqlConnection(cnstr);
+            MySqlDataAdapter da = new MySqlDataAdapter();
             if (pes == 1)
             {
-                da = new SqlDataAdapter("SELECT ven_cod, ven_data, ven_data_pagto, ven_nfiscal, ven_pagto_total, ven_pagto_dinheiro, ven_pagto_cartao, ven_nparcela, ven_status, cli_cod, tpa_cod FROM venda ", cn);
+                da = new MySqlDataAdapter("SELECT ven_cod, ven_data, ven_data_pagto, ven_nfiscal, ven_pagto_total, ven_pagto_dinheiro, ven_pagto_cartao, ven_nparcela, ven_status, cli_cod, tpa_cod FROM venda ", cn);
             }
             else
             {
-                da = new SqlDataAdapter("SELECT ven_cod, ven_data, ven_data_pagto, ven_nfiscal, ven_pagto_total, ven_pagto_dinheiro, ven_pagto_cartao, ven_nparcela, ven_status, cli_cod, tpa_cod FROM venda where ven_cod like '%" + nome + "%'", cn);
+                da = new MySqlDataAdapter("SELECT ven_cod, ven_data, ven_data_pagto, ven_nfiscal, ven_pagto_total, ven_pagto_dinheiro, ven_pagto_cartao, ven_nparcela, ven_status, cli_cod, tpa_cod FROM venda where ven_cod like '%" + nome + "%'", cn);
 
             }
             //SELECT ven_cod, ven_data, ven_data_pagto, ven_nfiscal, ven_pagto_total, ven_pagto_dinheiro, ven_pagto_cartao, ven_nparcela, ven_status, cli_cod, tpa_cod FROM venda

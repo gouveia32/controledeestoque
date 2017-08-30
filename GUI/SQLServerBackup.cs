@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace ControleDeEstoque.GUI
 {
-    public class SQLServerBackup
+    public class MySqlServerBackup
     {
-        public static ArrayList ObtemBancoDeDadosSQLServer(string ConnString)
+        public static ArrayList ObtemBancoDeDadosMySqlServer(string ConnString)
         {
             ArrayList lista = new ArrayList();
             //criou a conexao
-            SqlConnection cn = new SqlConnection(ConnString);
+            MySqlConnection cn = new MySqlConnection(ConnString);
             //criou o comando
-            SqlCommand cm = new SqlCommand();
+            MySqlCommand cm = new MySqlCommand();
             cm.Connection = cn;
             cm.CommandText = "SELECT [name] FROM sysdatabases";
             //criou o DataReader
-            SqlDataReader dr;
+            MySqlDataReader dr;
             try
             {
                 cn.Open();
@@ -45,9 +45,9 @@ namespace ControleDeEstoque.GUI
         {
             //string backup
             //criou a conexao
-            SqlConnection cn = new SqlConnection(ConnString);
+            MySqlConnection cn = new MySqlConnection(ConnString);
             //criou o comando
-            SqlCommand cm = new SqlCommand();
+            MySqlCommand cm = new MySqlCommand();
             cm.Connection = cn;
             cm.CommandText = "BACKUP DATABASE [" + nomeDB + "] TO DISK = '" + backupFile + "'";
 
@@ -68,12 +68,12 @@ namespace ControleDeEstoque.GUI
 
         public static void RestaurarDataBase(string ConnString, string nomeDB, string backupFile)
         {
-            SqlConnection cn = new SqlConnection(ConnString);
+            MySqlConnection cn = new MySqlConnection(ConnString);
             //criou o comando
-            SqlCommand cm = new SqlCommand();
+            MySqlCommand cm = new MySqlCommand();
             cm.Connection = cn;
-            string sql = "USE master ALTER DATABASE [" + nomeDB + "] SET OFFLINE WITH ROLLBACK IMMEDIATE; RESTORE DATABASE [" + nomeDB + "] FROM DISK = '" + backupFile + "' WITH REPLACE; USE master ALTER DATABASE [" + nomeDB + "] SET ONLINE";
-            cm.CommandText = sql;
+            string MySql = "USE master ALTER DATABASE [" + nomeDB + "] SET OFFLINE WITH ROLLBACK IMMEDIATE; RESTORE DATABASE [" + nomeDB + "] FROM DISK = '" + backupFile + "' WITH REPLACE; USE master ALTER DATABASE [" + nomeDB + "] SET ONLINE";
+            cm.CommandText = MySql;
             try
             {
                 cn.Open();

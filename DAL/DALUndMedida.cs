@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace ControleDeEstoque.DAL
             try
             {              
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into undmedida(umed_nome) values (@nome); select @@IDENTITY;";
 
@@ -35,9 +35,9 @@ namespace ControleDeEstoque.DAL
                 obj.umed_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE undmedida SET umed_nome = @nome WHERE umed_cod = @cod";
 
@@ -65,9 +65,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete from undmedida WHERE umed_cod = @cod";
 
@@ -94,9 +94,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -111,7 +111,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from undmedida", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from undmedida", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -119,7 +119,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from undmedida where umed_nome like '%" +
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from undmedida where umed_nome like '%" +
                 valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
@@ -128,12 +128,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaUnidadeDeMedida(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from undmedida where umed_nome = @nome";
             cmd.Parameters.AddWithValue("@nome", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -146,11 +146,11 @@ namespace ControleDeEstoque.DAL
         public ModeloUndMedida carregaModelo(int codigo)
         {
             ModeloUndMedida modelo = new ModeloUndMedida();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from undmedida where umed_cod =" + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

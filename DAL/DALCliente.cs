@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +23,7 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into cliente(cli_nome, cli_cpfcnpj, cli_rgie, cli_rsocial, cli_tipo, cli_cep, cli_endereco, cli_bairro, cli_fone, cli_cel, cli_email, cli_endnumero, cli_cidade, cli_estado, cli_datanasc, cli_localtrabalho, cli_fonetrabalho) values (@nome, @cpfcnpj, @rgie, @rsocial, @tipo, @cep, @endereco, @bairro, @fone, @cel, @email, @endnumero, @cidade, @estado, @datanasc, @localtrabalho, @fonetrabalho); select @@IDENTITY;";
                 cmd.Parameters.AddWithValue("@nome", obj.cli_nome);
@@ -46,9 +46,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 obj.cli_cod = Convert.ToInt32(cmd.ExecuteScalar());
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE cliente SET cli_nome = @nome, cli_cpfcnpj = @cpfcnpj, cli_rgie = @rgie, cli_rsocial = @rsocial, cli_tipo = @tipo, cli_cep = @cep, cli_endereco = @endereco, cli_bairro = @bairro, cli_fone = @fone, cli_cel = @cel, cli_email =  @email, cli_endnumero =  @endnumero, cli_cidade = @cidade, cli_estado = @estado, cli_datanasc = @datanasc, cli_localtrabalho = @localtrabalho, cli_fonetrabalho = @fonetrabalho WHERE cli_cod = @clicod";
                 cmd.Parameters.AddWithValue("@clicod", obj.cli_cod);
@@ -88,9 +88,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -106,16 +106,16 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete from cliente WHERE cli_cod = @clicod";
                 cmd.Parameters.AddWithValue("@clicod", codigo);
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from cliente", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from cliente", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -138,7 +138,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from cliente where cli_nome like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from cliente where cli_nome like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -151,7 +151,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemCPFCNPJ(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from cliente where cli_cpfcnpj like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from cliente where cli_cpfcnpj like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -159,12 +159,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaCliente(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from cliente where cli_cpfcnpj = @cpfcnpj";
             cmd.Parameters.AddWithValue("@cpfcnpj", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -176,12 +176,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaClienteEmail(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from cliente where cli_email = @email";
             cmd.Parameters.AddWithValue("@email", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -193,11 +193,11 @@ namespace ControleDeEstoque.DAL
         public ModeloCliente carregaModelo(int codigo)
         {
             ModeloCliente modelo = new ModeloCliente();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from cliente where cli_cod = " + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -226,11 +226,11 @@ namespace ControleDeEstoque.DAL
         public ModeloCliente carregaModeloCPFCNPJ(int codigo)
         {
             ModeloCliente modelo = new ModeloCliente();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from cliente where cli_cpfcnpj = " + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +15,8 @@ namespace ControleDeEstoque.DAL
             try
             {
                 this.StringDeConexao = stringDeConexao;
-                this._conexao = new SqlConnection(stringDeConexao);
-                //this._conexao = new SqlConnection();
+                this._conexao = new MySqlConnection(stringDeConexao);
+                //this._conexao = new MySqlConnection();
                 //this._conexao.ConnectionString = stringDeConexao;
             }
             catch (Exception ex)
@@ -26,8 +26,8 @@ namespace ControleDeEstoque.DAL
             }
         }
         //-------------------------------------------------------------------------------------------------------------------
-        private SqlConnection _conexao;
-        public SqlConnection Conexao
+        private MySqlConnection _conexao;
+        public MySqlConnection Conexao
         {
             get
             {

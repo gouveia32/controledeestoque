@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace ControleDeEstoque.DAL
             try
             {
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into itenscompra(itc_cod, itc_qtde, itc_valor, com_cod, pro_cod) values (@itccod, @itcqtde, @itcvalor, @comcod, @procod); select @@IDENTITY;";
                 cmd.Parameters.AddWithValue("@itccod", obj.itc_cod);
@@ -36,9 +36,9 @@ namespace ControleDeEstoque.DAL
                 obj.itc_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -50,13 +50,13 @@ namespace ControleDeEstoque.DAL
             }
         }
         //-------------------------------------------------------------------------------------------------------------------
-        public void Incluir(ModeloItensCompra obj, SqlConnection cn, SqlTransaction tran)
+        public void Incluir(ModeloItensCompra obj, MySqlConnection cn, MySqlTransaction tran)
         {
-            //SqlConnection cn = new SqlConnection();
+            //MySqlConnection cn = new MySqlConnection();
             try
             {
                 //cn.ConnectionString = DadosDoBanco.stringDeConexao;
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.Transaction = tran;
                 cmd.CommandText = "insert into itenscompra (itc_cod, itc_qtde, itc_valor, com_cod, pro_cod) values (@itc_cod, @itc_qtde, @itc_valor, @com_cod, @pro_cod);";
@@ -69,9 +69,9 @@ namespace ControleDeEstoque.DAL
                 //cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException sqlError)
+            catch (MySqlException MySqlError)
             {
-                throw new Exception("SQL error:" + sqlError.Message);
+                throw new Exception("MySql error:" + MySqlError.Message);
             }
             catch (Exception Error)
             {
@@ -87,7 +87,7 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE itenscompra SET itc_qtde, itc_valor, com_cod, pro_cod = @itcqtde, @itcvalor, @comcod, @procod, WHERE itc_cod = @itccod";
                 cmd.Parameters.AddWithValue("@itccod", obj.itc_cod);
@@ -98,9 +98,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -116,7 +116,7 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete From itenscompra WHERE itc_cod = @itccod";
 
@@ -125,9 +125,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -142,7 +142,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from itenscompra", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from itenscompra", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -150,7 +150,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(string valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("select * from itenscompra where itc_qtde like '%" + valor + "%'", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("select * from itenscompra where itc_qtde like '%" + valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -158,21 +158,21 @@ namespace ControleDeEstoque.DAL
         //exclui todos os itens com base no código da venda
         public void ExcluirTodosOsItens(int codigo)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "delete from itenscompra  WHERE com_cod = @com_cod";
                 cmd.Parameters.AddWithValue("@com_cod", codigo);
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Number);
+                throw new Exception("MySql ERROR: " + ex.Number);
             }
             catch (Exception ex)
             {
@@ -188,7 +188,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(int com_cod)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from itenscompra where com_cod =" +
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from itenscompra where com_cod =" +
                 com_cod.ToString(), DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
@@ -197,11 +197,11 @@ namespace ControleDeEstoque.DAL
         public ModeloItensCompra carregaModelo(int codigo)
         {
             ModeloItensCompra modelo = new ModeloItensCompra();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from itenscompra where itc_cod = " + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

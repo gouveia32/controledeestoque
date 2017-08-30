@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 
 namespace GUI
@@ -27,15 +27,15 @@ namespace GUI
         private DataTable populate(DataTable dt)
         {
             string cnstr = @DALDadosDoBanco.stringDeConexao;
-            SqlConnection cn = new SqlConnection(cnstr);
-            SqlDataAdapter da = new SqlDataAdapter();
+            MySqlConnection cn = new MySqlConnection(cnstr);
+            MySqlDataAdapter da = new MySqlDataAdapter();
             if (pes == 1)
             {
-                da = new SqlDataAdapter("SELECT produto.pro_nome, produto.pro_descricao, produto.pro_foto, produto.pro_valorpago, produto.pro_valorvenda, produto.pro_qtde, produto.umed_cod, produto.cat_cod, undmedida.umed_nome, categoria.cat_nome, subcategoria.scat_nome, produto.scat_cod, produto.pro_tamanho FROM produto INNER JOIN categoria ON produto.cat_cod = categoria.cat_cod INNER JOIN undmedida ON produto.umed_cod = undmedida.umed_cod INNER JOIN subcategoria ON produto.scat_cod = subcategoria.scat_cod AND categoria.cat_cod = subcategoria.cat_cod ", cn);
+                da = new MySqlDataAdapter("SELECT produto.pro_nome, produto.pro_descricao, produto.pro_foto, produto.pro_valorpago, produto.pro_valorvenda, produto.pro_qtde, produto.umed_cod, produto.cat_cod, undmedida.umed_nome, categoria.cat_nome, subcategoria.scat_nome, produto.scat_cod, produto.pro_tamanho FROM produto INNER JOIN categoria ON produto.cat_cod = categoria.cat_cod INNER JOIN undmedida ON produto.umed_cod = undmedida.umed_cod INNER JOIN subcategoria ON produto.scat_cod = subcategoria.scat_cod AND categoria.cat_cod = subcategoria.cat_cod ", cn);
             }
             else
             {
-                da = new SqlDataAdapter("SELECT produto.pro_nome, produto.pro_descricao, produto.pro_foto, produto.pro_valorpago, produto.pro_valorvenda, produto.pro_qtde, produto.umed_cod, produto.cat_cod, undmedida.umed_nome, categoria.cat_nome, subcategoria.scat_nome, produto.scat_cod, produto.pro_tamanho FROM produto INNER JOIN categoria ON produto.cat_cod = categoria.cat_cod INNER JOIN undmedida ON produto.umed_cod = undmedida.umed_cod INNER JOIN subcategoria ON produto.scat_cod = subcategoria.scat_cod AND categoria.cat_cod = subcategoria.cat_cod where pro_nome like '%" + nome + "%'", cn);
+                da = new MySqlDataAdapter("SELECT produto.pro_nome, produto.pro_descricao, produto.pro_foto, produto.pro_valorpago, produto.pro_valorvenda, produto.pro_qtde, produto.umed_cod, produto.cat_cod, undmedida.umed_nome, categoria.cat_nome, subcategoria.scat_nome, produto.scat_cod, produto.pro_tamanho FROM produto INNER JOIN categoria ON produto.cat_cod = categoria.cat_cod INNER JOIN undmedida ON produto.umed_cod = undmedida.umed_cod INNER JOIN subcategoria ON produto.scat_cod = subcategoria.scat_cod AND categoria.cat_cod = subcategoria.cat_cod where pro_nome like '%" + nome + "%'", cn);
 
             }
             //SELECT produto.pro_nome, produto.pro_descricao, produto.pro_foto, produto.pro_valorpago, produto.pro_valorvenda, produto.pro_qtde, produto.umed_cod, produto.cat_cod, undmedida.umed_nome, categoria.cat_nome, subcategoria.scat_nome, produto.scat_cod FROM produto INNER JOIN categoria ON produto.cat_cod = categoria.cat_cod INNER JOIN undmedida ON produto.umed_cod = undmedida.umed_cod INNER JOIN subcategoria ON produto.scat_cod = subcategoria.scat_cod AND categoria.cat_cod = subcategoria.cat_cod WHERE (produto.pro_nome LIKE '%' + @nome + '%')

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 using Microsoft.Reporting.WinForms;
 
@@ -27,15 +27,15 @@ namespace ControleDeEstoque.GUI
         private DataTable populate(DataTable dt)
         {
             string cnstr = @DALDadosDoBanco.stringDeConexao;
-            SqlConnection cn = new SqlConnection(cnstr);
-            SqlDataAdapter da = new SqlDataAdapter();
+            MySqlConnection cn = new MySqlConnection(cnstr);
+            MySqlDataAdapter da = new MySqlDataAdapter();
             if (pes == 1)
             {
-                da = new SqlDataAdapter("SELECT n.emp_nomefantasia, n.emp_cep, n.emp_endereco, n.emp_cnpj, n.emp_ie, n.emp_im, n.emp_telefone, n.nt_cod, p.pro_cod, p.pro_nome, p.pro_qtde, p.pro_valorvenda, n.pro_valortotal, n.nt_valortotal, n.nt_valorimposto FROM nota INNER JOIN produto ON p.pro_cod = n.pro_cod", cn);
+                da = new MySqlDataAdapter("SELECT n.emp_nomefantasia, n.emp_cep, n.emp_endereco, n.emp_cnpj, n.emp_ie, n.emp_im, n.emp_telefone, n.nt_cod, p.pro_cod, p.pro_nome, p.pro_qtde, p.pro_valorvenda, n.pro_valortotal, n.nt_valortotal, n.nt_valorimposto FROM nota INNER JOIN produto ON p.pro_cod = n.pro_cod", cn);
             }
             else
             {
-                da = new SqlDataAdapter("SELECT n.emp_nomefantasia, n.emp_cep, n.emp_endereco, n.emp_cnpj, n.emp_ie, n.emp_im, n.emp_telefone, n.nt_cod, p.pro_cod, p.pro_nome, p.pro_qtde, p.pro_valorvenda, n.pro_valortotal, n.nt_valortotal, n.nt_valorimposto FROM nota INNER JOIN produto ON p.pro_cod = n.pro_cod like '%" + nome + "%'", cn);
+                da = new MySqlDataAdapter("SELECT n.emp_nomefantasia, n.emp_cep, n.emp_endereco, n.emp_cnpj, n.emp_ie, n.emp_im, n.emp_telefone, n.nt_cod, p.pro_cod, p.pro_nome, p.pro_qtde, p.pro_valorvenda, n.pro_valortotal, n.nt_valortotal, n.nt_valorimposto FROM nota INNER JOIN produto ON p.pro_cod = n.pro_cod like '%" + nome + "%'", cn);
             }
 
             da.Fill(dt);

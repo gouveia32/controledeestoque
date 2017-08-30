@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 
 namespace GUI
@@ -27,15 +27,15 @@ namespace GUI
         private DataTable populate(DataTable dt)
         {
             string cnstr = @DALDadosDoBanco.stringDeConexao;
-            SqlConnection cn = new SqlConnection(cnstr);
-            SqlDataAdapter da = new SqlDataAdapter();
+            MySqlConnection cn = new MySqlConnection(cnstr);
+            MySqlDataAdapter da = new MySqlDataAdapter();
             if (pes == 1)
             {
-                da = new SqlDataAdapter("SELECT com_cod, com_data, com_pagto_data, com_nfiscal, com_pagto_dinheiro, com_pagto_total, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod FROM compra ", cn);
+                da = new MySqlDataAdapter("SELECT com_cod, com_data, com_pagto_data, com_nfiscal, com_pagto_dinheiro, com_pagto_total, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod FROM compra ", cn);
             }
             else
             {
-                da = new SqlDataAdapter("SELECT com_cod, com_data, com_pagto_data, com_nfiscal, com_pagto_dinheiro, com_pagto_total, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod FROM compra where com_cod like '%" + nome + "%'", cn);
+                da = new MySqlDataAdapter("SELECT com_cod, com_data, com_pagto_data, com_nfiscal, com_pagto_dinheiro, com_pagto_total, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod FROM compra where com_cod like '%" + nome + "%'", cn);
 
             }
             //SELECT com_cod, com_data, com_pagto_data, com_nfiscal, com_pagto_dinheiro, com_pagto_total, com_pagto_cartao, com_nparcela, com_status, for_cod, tpa_cod FROM compra

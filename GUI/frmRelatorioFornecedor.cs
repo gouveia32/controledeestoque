@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 
 namespace GUI
@@ -27,15 +27,15 @@ namespace GUI
         private DataTable populate(DataTable dt)
         {
             string cnstr = @DALDadosDoBanco.stringDeConexao;
-            SqlConnection cn = new SqlConnection(cnstr);
-            SqlDataAdapter da = new SqlDataAdapter();
+            MySqlConnection cn = new MySqlConnection(cnstr);
+            MySqlDataAdapter da = new MySqlDataAdapter();
             if (pes == 1)
             {
-                da = new SqlDataAdapter("SELECT for_cod, for_nome, for_rsocial, for_ie, for_cnpj, for_cep, for_endereco, for_bairro, for_fone, for_cel, for_email, for_endnumero, for_cidade, for_estado FROM fornecedor ", cn);
+                da = new MySqlDataAdapter("SELECT for_cod, for_nome, for_rsocial, for_ie, for_cnpj, for_cep, for_endereco, for_bairro, for_fone, for_cel, for_email, for_endnumero, for_cidade, for_estado FROM fornecedor ", cn);
             }
             else
             {
-                da = new SqlDataAdapter("SELECT for_cod, for_nome, for_rsocial, for_ie, for_cnpj, for_cep, for_endereco, for_bairro, for_fone, for_cel, for_email, for_endnumero, for_cidade, for_estado FROM fornecedor where for_nome like '%" + nome + "%'", cn);
+                da = new MySqlDataAdapter("SELECT for_cod, for_nome, for_rsocial, for_ie, for_cnpj, for_cep, for_endereco, for_bairro, for_fone, for_cel, for_email, for_endnumero, for_cidade, for_estado FROM fornecedor where for_nome like '%" + nome + "%'", cn);
 
             }
             //SELECT for_cod, for_nome, for_rsocial, for_ie, for_cnpj, for_cep, for_endereco, for_bairro, for_fone, for_cel, for_email, for_endnumero, for_cidade, for_estado FROM fornecedor WHERE (for_nome LIKE '%' + @nome + '%')

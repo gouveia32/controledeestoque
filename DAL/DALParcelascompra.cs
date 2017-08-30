@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +15,12 @@ namespace ControleDeEstoque.DAL
         public void Incluir(ModeloParcelascompra obj)
         {
             //conexao
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "insert into parcelascompra (com_cod, pco_valor, pco_cod, pco_datapagto, pco_datavecto) values (@com_cod, @pco_valor, @pco_cod, @pco_datapagto, @pco_datavecto);";
                 cmd.Parameters.AddWithValue("@com_cod", obj.com_cod);
@@ -30,8 +30,8 @@ namespace ControleDeEstoque.DAL
                 //cmd.Parameters.AddWithValue("@pve_datavecto", obj.pve_datavecto);
 
 
-                cmd.Parameters.Add("@pco_datapagto", System.Data.SqlDbType.Date);
-                cmd.Parameters.Add("@pco_datavecto", System.Data.SqlDbType.Date);
+                cmd.Parameters.Add("@pco_datapagto", MySqlDbType.Date);
+                cmd.Parameters.Add("@pco_datavecto", MySqlDbType.Date);
                 if (obj.pco_datapagto == null)
                 {
                     cmd.Parameters["@pco_datapagto"].Value = DBNull.Value;
@@ -52,9 +52,9 @@ namespace ControleDeEstoque.DAL
                 cmd.ExecuteNonQuery();
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -66,15 +66,15 @@ namespace ControleDeEstoque.DAL
             }
         }
         //-------------------------------------------------------------------------------------------------------------------
-        public void Incluir(ModeloParcelascompra obj, SqlConnection cn, SqlTransaction tran)
+        public void Incluir(ModeloParcelascompra obj, MySqlConnection cn, MySqlTransaction tran)
         {
             //conexao
-            //SqlConnection cn = new SqlConnection();
+            //MySqlConnection cn = new MySqlConnection();
             try
             {
                 //cn.ConnectionString = DadosDoBanco.stringDeConexao;
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.Transaction = tran;
                 cmd.CommandText = "insert into parcelascompra (com_cod, pco_valor, pco_cod, pco_datapagto, pco_datavecto) values (@com_cod, @pco_valor, @pco_cod, @pco_datapagto, @pco_datavecto);";
@@ -85,8 +85,8 @@ namespace ControleDeEstoque.DAL
                 //cmd.Parameters.AddWithValue("@pve_datavecto", obj.pve_datavecto);
 
 
-                cmd.Parameters.Add("@pco_datapagto", System.Data.SqlDbType.Date);
-                cmd.Parameters.Add("@pco_datavecto", System.Data.SqlDbType.Date);
+                cmd.Parameters.Add("@pco_datapagto", MySqlDbType.Date);
+                cmd.Parameters.Add("@pco_datavecto", MySqlDbType.Date);
                 if (obj.pco_datapagto == null)
                 {
                     cmd.Parameters["@pco_datapagto"].Value = DBNull.Value;
@@ -106,9 +106,9 @@ namespace ControleDeEstoque.DAL
                 //cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -123,12 +123,12 @@ namespace ControleDeEstoque.DAL
         public void Alterar(ModeloParcelascompra obj)
         {
             //conexão
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "UPDATE parcelascompra set pco_valor = @pco_valor, pco_datapagto = @pco_datapagto, pco_datavecto = @pco_datavecto " +
                     " where com_cod = @com_cod and pco_cod = @pco_cod, ";
@@ -138,8 +138,8 @@ namespace ControleDeEstoque.DAL
                 cmd.Parameters.AddWithValue("@pco_valor", obj.pco_valor);
                 //cmd.Parameters.AddWithValue("@pve_datapagto", obj.pve_datapagto);
                 //cmd.Parameters.AddWithValue("@pve_datavecto", obj.pve_datavecto);
-                cmd.Parameters.Add("@pco_datapagto", System.Data.SqlDbType.DateTime);
-                cmd.Parameters.Add("@pco_datavecto", System.Data.SqlDbType.DateTime);
+                cmd.Parameters.Add("@pco_datapagto", MySqlDbType.DateTime);
+                cmd.Parameters.Add("@pco_datavecto", MySqlDbType.DateTime);
                 if (obj.pco_datapagto == null)
                 {
                     cmd.Parameters["@pco_datapagto"].Value = DBNull.Value;
@@ -159,9 +159,9 @@ namespace ControleDeEstoque.DAL
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -176,21 +176,21 @@ namespace ControleDeEstoque.DAL
         //deleta todas as parcelas da venda
         public void Excluir(int com_cod)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "delete from parcelascompra  WHERE com_cod = @com_cod";
                 cmd.Parameters.AddWithValue("@com_cod", com_cod);
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -205,12 +205,12 @@ namespace ControleDeEstoque.DAL
         //deleta uma parcela especifica
         public void Excluir(int com_cod, int pco_cod)
         {
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             try
             {
                 cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 //comando
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn;
                 cmd.CommandText = "delete from parcelascompra  WHERE com_cod = @com_cod  and  pco_cod = @pco_cod";
                 cmd.Parameters.AddWithValue("@com_cod", com_cod);
@@ -218,9 +218,9 @@ namespace ControleDeEstoque.DAL
                 cn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -235,7 +235,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from parcelascompra", DALDadosDoBanco.stringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from parcelascompra", DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -244,7 +244,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(int com_cod)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from parcelascompra where com_cod =" +
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from parcelascompra where com_cod =" +
                 com_cod.ToString(), DALDadosDoBanco.stringDeConexao);
             da.Fill(tabela);
             return tabela;
@@ -253,14 +253,14 @@ namespace ControleDeEstoque.DAL
         public ModeloParcelascompra carregaModelo(int pco_cod, int com_cod)
         {
             ModeloParcelascompra modelo = new ModeloParcelascompra();
-            SqlConnection cn = new SqlConnection();
+            MySqlConnection cn = new MySqlConnection();
             cn.ConnectionString = DALDadosDoBanco.stringDeConexao;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn;
             cmd.CommandText = "select * from parcelascompra where pco_cod =" + pco_cod.ToString() +
                 " and com_cod =" + com_cod.ToString();
             cn.Open();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

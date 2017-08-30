@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace ControleDeEstoque.DAL
 {
@@ -24,7 +24,7 @@ namespace ControleDeEstoque.DAL
             try
             {              
                 //command
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "insert into categoria(cat_nome) values (@nome); select @@IDENTITY;";
 
@@ -34,9 +34,9 @@ namespace ControleDeEstoque.DAL
                 obj.cat_cod = Convert.ToInt32(cmd.ExecuteScalar());
 
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "UPDATE categoria SET cat_nome = @nome WHERE cat_cod = @cod";
                 cmd.Parameters.AddWithValue("@nome", obj.cat_nome);
@@ -60,9 +60,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Servidor SQL Erro: " + ex.Message);
+                throw new Exception("Servidor MySql Erro: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace ControleDeEstoque.DAL
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
+                MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = cn.Conexao;
                 cmd.CommandText = "delete from categoria WHERE cat_cod = @cod";
 
@@ -87,9 +87,9 @@ namespace ControleDeEstoque.DAL
                 cn.Conectar();
                 cmd.ExecuteNonQuery();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("SQL ERROR: " + ex.Message);
+                throw new Exception("MySql ERROR: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -104,7 +104,7 @@ namespace ControleDeEstoque.DAL
         public DataTable Listagem()
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from categoria", cn.StringDeConexao);
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from categoria", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
         }
@@ -112,7 +112,7 @@ namespace ControleDeEstoque.DAL
         public DataTable ListagemComFiltro(String valor)
         {
             DataTable tabela = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter("Select * from categoria where cat_nome like '%" +
+            MySqlDataAdapter da = new MySqlDataAdapter("Select * from categoria where cat_nome like '%" +
                 valor + "%'", cn.StringDeConexao);
             da.Fill(tabela);
             return tabela;
@@ -121,12 +121,12 @@ namespace ControleDeEstoque.DAL
         public int VerificaCategoria(String valor)//0 - não existe valor || > 0 existe
         {
             int r = 0;
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from categoria where cat_nome = @nome";
             cmd.Parameters.AddWithValue("@nome", valor);
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
@@ -138,11 +138,11 @@ namespace ControleDeEstoque.DAL
         public ModeloCategoria carregaModelo(int codigo)
         {
             ModeloCategoria modelo = new ModeloCategoria();
-            SqlCommand cmd = new SqlCommand();
+            MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = cn.Conexao;
             cmd.CommandText = "select * from categoria where cat_cod =" + codigo.ToString();
             cn.Conectar();
-            SqlDataReader registro = cmd.ExecuteReader();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();

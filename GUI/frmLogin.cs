@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ControleDeEstoque.Modelo;
 using ControleDeEstoque.BLL;
-using System.Data.SqlClient;
+//using MySql.Data.MySqlClient;
 using ControleDeEstoque.DAL;
 using System.IO;
-
+using MySql.Data.MySqlClient;
 
 namespace ControleDeEstoque.GUI
 {
     public partial class frmLogin : Form
     {
         //-------------------------------------------------------------------------------------------------------------------
-        SqlConnection cn = null;
+        MySqlConnection cn = null;
         //public bool logado = false;
         //-------------------------------------------------------------------------------------------------------------------
         frmPrincipal frm = new frmPrincipal();
@@ -33,7 +33,7 @@ namespace ControleDeEstoque.GUI
         //-------------------------------------------------------------------------------------------------------------------
         public void logar()
         {
-            cn = new SqlConnection(DALDadosDoBanco.stringDeConexao);
+            cn = new MySqlConnection(DALDadosDoBanco.stringDeConexao);
             try{
                 if (txtTipoUsuario.Text == "")
                 {
@@ -50,9 +50,9 @@ namespace ControleDeEstoque.GUI
                     frm.ShowDialog();
                     return;
                 }
-                SqlCommand cmd = new SqlCommand("SELECT usu_cod FROM usuarios WHERE usu_nome = @nome AND usu_senha = @senha", cn);
-                cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = txtTipoUsuario.Text;
-                cmd.Parameters.Add("@senha", SqlDbType.VarChar).Value = txtSenha.Text;
+                MySqlCommand cmd = new MySqlCommand("SELECT usu_cod FROM usuarios WHERE usu_nome = @nome AND usu_senha = @senha", cn);
+                cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = txtTipoUsuario.Text;
+                cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = txtSenha.Text;
                 cn.Open();
                 v = (int)cmd.ExecuteScalar();
                 BLLUsuario bllusuario = new BLLUsuario();
@@ -171,12 +171,12 @@ namespace ControleDeEstoque.GUI
                 DALDadosDoBanco.senha = arquivo.ReadLine();
                 arquivo.Close();
                 //testar a conexao
-                SqlConnection conexao = new SqlConnection();
+                MySqlConnection conexao = new MySqlConnection();
                 conexao.ConnectionString = DALDadosDoBanco.stringDeConexao;
                 conexao.Open();
                 conexao.Close();
             }
-            catch (SqlException errob)
+            catch (MySqlException errob)
             {
                 MessageBox.Show("Erro ao se conectar no banco de dados \n" + "Acesse as configurações de banco do dados e informe os parâmetros de conexão", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
